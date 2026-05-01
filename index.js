@@ -129,6 +129,7 @@ app.post('/send-message', async (req, res) => {
     }
 
     try {
+        if (!client) return res.status(500).json({ error: 'El cliente de WhatsApp no está inicializado.' });
         // Enviar el mensaje a través del cliente de WhatsApp
         await client.sendMessage(chatId, text);
         console.log(`\n📤 Mensaje enviado a [${chatId}]: ${text}`);
@@ -140,13 +141,13 @@ app.post('/send-message', async (req, res) => {
     }
 });
 
-// Iniciar servidor Express
-app.listen(PORT, () => {
-    console.log(`🚀 Microservicio Node.js escuchando en el puerto ${PORT}`);
-});
-
 // Inicializar cliente al final (envuelto dentro de la promesa de mongoose)
     client.initialize();
 }).catch(err => {
     console.error('❌ Error conectando a MongoDB:', err.message);
+});
+
+// Iniciar servidor Express (fuera de Mongo para que Render detecte el puerto)
+app.listen(PORT, () => {
+    console.log(`🚀 Microservicio Node.js escuchando en el puerto ${PORT}`);
 });
