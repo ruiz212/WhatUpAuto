@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Generar archivo credentials.json desde la variable de entorno para Render
+if [ -n "$GOOGLE_CREDENTIALS_JSON" ]; then
+    echo "Generando credentials.json desde la variable de entorno..."
+    echo "$GOOGLE_CREDENTIALS_JSON" > /app/flask_backend/credentials.json
+fi
+
 echo "Iniciando Backend Flask..."
 cd /app/flask_backend
 python3 app.py &
