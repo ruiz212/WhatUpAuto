@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: whatsapp-ai-bot
+    env: docker
+    region: oregon # O tu región preferida
+    plan: free # Cambiar a 'starter' si usas disco persistente
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+    # Descomenta esto si usas el plan de pago y quieres guardar la sesión de WhatsApp:
+    # disk:
+    #   name: data
+    #   mountPath: /app/.wwebjs_auth
+    #   sizeGB: 1

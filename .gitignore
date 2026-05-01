@@ -1,0 +1,22 @@
+# Node.js
+node_modules/
+.wwebjs_auth/
+.wwebjs_cache/
+
+# Entornos virtuales Python
+flask_backend/venv/
+venv/
+__pycache__/
+*.pyc
+
+# Variables de entorno y credenciales (¡MUY IMPORTANTE!)
+.env
+flask_backend/.env
+flask_backend/credentials.json
+
+# Archivos multimedia locales
+archivos/
+
+# SO
+.DS_Store
+Thumbs.db
