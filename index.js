@@ -59,7 +59,10 @@ mongoose.connect(MONGODB_URI).then(() => {
                 '--disable-background-timer-throttling',
                 '--disable-backgrounding-occluded-windows',
                 '--disable-renderer-backgrounding',
-                '--js-flags="--max_old_space_size=80"'
+                '--js-flags="--max_old_space_size=80"',
+                '--disk-cache-size=0',
+                '--disable-application-cache',
+                '--disable-offline-load-stale-cache'
             ]
         }
     });
