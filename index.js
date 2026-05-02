@@ -42,6 +42,7 @@ mongoose.connect(MONGODB_URI).then(() => {
     client = new Client({
         authStrategy: new RemoteAuth({
             store: store,
+            clientId: 'bot-v2', // Forzar una sesión limpia en MongoDB
             backupSyncIntervalMs: 300000 // Guarda la sesión cada 5 min
         }),
         puppeteer: {
