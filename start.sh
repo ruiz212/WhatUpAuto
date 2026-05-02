@@ -18,3 +18,16 @@ NODE_PID=$!
 
 # Esperar a que cualquiera de los procesos termine (para mantener el contenedor vivo)
 wait -n $FLASK_PID $NODE_PID
+EXIT_CODE=$?
+
+echo "========================================="
+if ! kill -0 $FLASK_PID 2>/dev/null; then
+  echo "❌ ALERTA FATAL: El servidor de Python (Flask) se ha caído."
+fi
+
+if ! kill -0 $NODE_PID 2>/dev/null; then
+  echo "❌ ALERTA FATAL: El servidor de Node.js se ha caído."
+fi
+echo "========================================="
+
+exit $EXIT_CODE
