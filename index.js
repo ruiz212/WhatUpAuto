@@ -47,6 +47,12 @@ mongoose.connect(MONGODB_URI).then(() => {
         console.log('📱 Escanea el siguiente código QR con tu WhatsApp:');
         console.log('======================================================\n');
         qrcode.generate(qr, { small: true });
+        
+        console.log('\n======================================================');
+        console.log('⚠️ ¿El código de arriba se ve roto o deformado?');
+        console.log('Copia el siguiente enlace y pégalo en tu navegador web para ver el QR perfectamente claro:');
+        console.log(`https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(qr)}`);
+        console.log('======================================================\n');
     });
 
     // Evento: Cliente autenticado y listo
