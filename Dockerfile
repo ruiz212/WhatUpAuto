@@ -38,9 +38,11 @@ RUN pip3 install --no-cache-dir -r flask_backend/requirements.txt
 # Copiar el resto del código
 COPY . .
 
-# Variables de entorno para Puppeteer y servicios
+# Variables de entorno para Puppeteer, Node y Python (Optimizaciones de Memoria)
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 ENV NODE_ENV=production
+ENV NODE_OPTIONS="--max-old-space-size=128"
+ENV MALLOC_ARENA_MAX=2
 ENV FLASK_WEBHOOK_URL=http://localhost:5000/webhook
 ENV NODE_URL=http://localhost:3000
 
