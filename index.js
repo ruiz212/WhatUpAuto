@@ -55,7 +55,10 @@ mongoose.connect(MONGODB_URI).then(() => {
                 '--no-first-run', 
                 '--no-zygote', 
                 '--disable-gpu',
-                '--disable-features=site-per-process'
+                '--disable-features=site-per-process',
+                '--disable-background-timer-throttling',
+                '--disable-backgrounding-occluded-windows',
+                '--disable-renderer-backgrounding'
             ]
         }
     });
@@ -83,8 +86,23 @@ mongoose.connect(MONGODB_URI).then(() => {
         console.log('💾 Sesión de WhatsApp guardada en MongoDB con éxito.');
     });
 
-// Evento: Escuchar mensajes entrantes (WhatsApp -> Flask)
-client.on('message', async (msg) => {
+// Evento: Fallo de autenticación
+client.on('auth_failure', msg => {
+    console.error('❌ Falla en la autenticación de WhatsApp:', msg);
+});
+
+// Evento: Desconexión
+client.on('disconnected', (reason) => {
+    console.error('❌ Cliente de WhatsApp desconectado. Razón:', reason);
+});
+
+// Evento: Escuchar TODOS los mensajes entrantes y salientes (WhatsApp -> Flask)
+client.on('message_create', async (msg) => {
+    // Si el mensaje fue enviado por el propio usuario, solo procesarlo si se lo envió a sí mismo (chat "Tú")
+    if (msg.fromMe && msg.to !== msg.from) {
+        return; // Ignorar mensajes enviados por el usuario a otras personas
+    }
+
     try {
         // Extraer la información solicitada
         const messageData = {
@@ -115,7 +133,7 @@ client.on('message', async (msg) => {
             }
         }
 
-        console.log(`\n📩 Mensaje recibido de [${messageData.from}]: ${messageData.body}`);
+        console.log(`\n📩 Mensaje interceptado en chat [${messageData.from}]: ${messageData.body}`);
 
         // Enviar datos al backend principal (Flask)
         const response = await axios.post(FLASK_WEBHOOK_URL, messageData);
