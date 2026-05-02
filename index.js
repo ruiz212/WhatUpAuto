@@ -12,6 +12,15 @@ const path = require('path');
 const app = express();
 app.use(express.json());
 
+// Evitar que el servidor Node colapse por el bug conocido de RemoteAuth.zip de whatsapp-web.js
+process.on('uncaughtException', (err) => {
+    console.error('❌ Excepción no capturada (Ignorada para evitar caída):', err.message);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('❌ Promesa rechazada no manejada:', reason);
+});
+
 // Configuraciones de entorno
 const PORT = process.env.PORT || 3000;
 const FLASK_WEBHOOK_URL = process.env.FLASK_WEBHOOK_URL || 'http://localhost:5000/webhook';
